@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixiT AI - Your Smart Repair Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Material 3 feel */
+        /* Using Inter font as requested in general instructions */
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f7f2f7; /* Surface color */
+            color: #1c1b1f; /* On Surface color */
+        }
+        .primary-container {
+            background-color: #eaddff; /* Primary Container */
+            color: #21005d; /* On Primary Container */
+        }
+        .secondary-container {
+             background-color: #e8def8; /* Secondary Container */
+             color: #4f378a; /* On Secondary Container */
+        }
+        .tertiary-container {
+            background-color: #ffd8e4; /* Tertiary Container */
+            color: #82555e; /* On Tertiary Container */
+        }
+         .error-container {
+            background-color: #f9dedc; /* Error Container */
+            color: #b3261e; /* On Error Container */
+        }
+        .primary-button {
+            background-color: #6750a4; /* Primary */
+            color: #ffffff; /* On Primary */
+            padding: 12px 24px;
+            border-radius: 24px; /* Fully rounded */
+            font-weight: 500; /* Medium weight */
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .primary-button:hover {
+            background-color: #4f378a; /* Primary container on hover */
+        }
+        .outline-button {
+             border: 1px solid #79747e; /* Outline */
+             color: #6750a4; /* Primary color for text */
+             padding: 10px 22px; /* Adjust padding for border */
+             border-radius: 20px; /* Rounded corners */
+             font-weight: 500;
+             transition: background-color 0.3s ease, color 0.3s ease;
+             background-color: transparent;
+             cursor: pointer;
+        }
+        .outline-button:hover {
+             background-color: #e8def8; /* Secondary container on hover */
+             color: #4f378a;
+        }
+         .card {
+            background-color: #ffffff; /* Surface */
+            color: #1c1b1f; /* On Surface */
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+        }
+         .top-app-bar {
+            background-color: #eaddff; /* Primary Container */
+            color: #21005d; /* On Primary Container */
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .top-app-bar .nav-link {
+            margin-left: 24px;
+            color: #21005d; /* On Primary Container */
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .top-app-bar .nav-link:hover {
+             color: #4f378a; /* On Secondary Container */
+        }
+        /* Responsive navigation - Hide on small screens, show on medium+ */
+        .nav-links {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+             .menu-button {
+                display: none;
+            }
+        }
+
+         /* Font for icons - using Lucide React equivalent for demo */
+         /* In a real app, you'd use an icon library like Lucide or Material Icons */
+         .icon {
+             display: inline-block;
+             width: 24px;
+             height: 24px;
+             vertical-align: middle;
+             /* Placeholder for SVG or icon font */
+             background-color: currentColor; /* Use text color for icon */
+             mask-size: cover;
+         }
+         /* Example icon placeholders */
+         .icon-wrench { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 0 7.94-7.94l-3.77 3.77Z"/></svg>'); }
+         .icon-book { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>'); }
+         .icon-scale { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-9 3 9c-.8-.4-2-.8-3-1-1.2-.1-2-.5-3-1ZM2 16l3-9 3 9c-.8-.4-2-.8-3-1-1.2-.1-2-.5-3-1ZM7 21l5-10 5 10"/><path d="M12 12v9"/></svg>'); }
+         .icon-camera { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>'); }
+         .icon-dollar { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>'); }
+         .icon-heart { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>'); }
+
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="top-app-bar">
+        <div class="text-xl font-bold">FixiT AI</div>
+        <nav class="nav-links">
+            <a href="#how-it-works" class="nav-link">How it Works</a>
+            <a href="#learn" class="nav-link">Learn</a>
+            <a href="#rights" class="nav-link">Your Rights</a>
+            <a href="#pricing" class="nav-link">Pricing</a>
+             <a href="#contributor" class="nav-link">Contributor</a>
+            <a href="ai_interface.html" class="primary-button ml-4">Get Started Free</a>
+        </nav>
+        <button class="menu-button md:hidden outline-button">
+            Menu </button>
+    </header>
+
+    <section class="primary-container text-center py-20 px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">Fix Anything with FixiT AI</h1>
+        <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Your intelligent companion for hassle-free repairs, learning technology, and understanding your consumer rights.</p>
+        <div class="flex justify-center space-x-4">
+            <a href="ai_interface.html" class="primary-button">Start Fixing Now</a>
+            <button class="outline-button">Learn More</button>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-16 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">How FixiT AI Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card p-6 text-center secondary-container">
+                    <span class="icon icon-camera mx-auto mb-4"></span>
+                    <h3 class="text-xl font-semibold mb-4">Show Us the Problem</h3>
+                    <p>Use your phone's camera. Our AI analyzes the item and identifies the issue in real-time.</p>
+                </div>
+                <div class="card p-6 text-center tertiary-container">
+                     <span class="icon icon-wrench mx-auto mb-4"></span>
+                    <h3 class="text-xl font-semibold mb-4">Get Step-by-Step Guidance</h3>
+                    <p>Receive clear, visual instructions tailored to your specific situation, highlighting tools and parts.</p>
+                </div>
+                <div class="card p-6 text-center error-container">
+                     <span class="icon icon-scale mx-auto mb-4"></span>
+                    <h3 class="text-xl font-semibold mb-4">Stay Safe & Informed</h3>
+                    <p>AI provides instant risk assessments, safety warnings, and relevant tips on consumer rights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <section id="learn" class="secondary-container py-16 px-4">
+        <div class="container mx-auto flex flex-col md:flex-row items-center gap-8">
+            <div class="md:w-1/2">
+                <span class="icon icon-book mb-4 w-12 h-12"></span>
+                <h2 class="text-3xl font-bold mb-6">Learn More Than Just Fixing</h2>
+                <p class="text-lg mb-6">FixiT AI isn't just about repairs. We help you understand *how* things work. Explore interactive diagrams, component explanations, and the principles behind common technologies.</p>
+                <button class="outline-button">Explore Learning Resources</button>
+            </div>
+            <div class="md:w-1/2">
+                <img src="https://placehold.co/600x400/eaddff/21005d?text=Tech+Diagram+Placeholder" alt="Technology Learning Illustration" class="rounded-lg shadow-lg w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+     <section id="rights" class="py-16 px-4">
+        <div class="container mx-auto flex flex-col md:flex-row-reverse items-center gap-8">
+             <div class="md:w-1/2">
+                <span class="icon icon-scale mb-4 w-12 h-12"></span>
+                <h2 class="text-3xl font-bold mb-6">Know Your Consumer Rights</h2>
+                <p class="text-lg mb-6">Understanding your rights as a consumer is crucial. FixiT AI provides easy-to-understand information on warranties, returns, product lifespan, and the 'right to repair' movement relevant to your location.</p>
+                <button class="outline-button">Understand Your Rights</button>
+            </div>
+            <div class="md:w-1/2">
+                <img src="https://placehold.co/600x400/f9dedc/b3261e?text=Rights+Illustration+Placeholder" alt="Consumer Rights Illustration" class="rounded-lg shadow-lg w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="tertiary-container py-16 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12">Unlock More with Premium Plans</h2>
+            <p class="text-lg mb-8 max-w-2xl mx-auto">Start fixing for free, and upgrade for enhanced features and support.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card p-6 secondary-container">
+                    <h3 class="text-2xl font-semibold mb-4">Free</h3>
+                    <p class="text-4xl font-bold mb-4">$0<span class="text-lg font-normal">/month</span></p>
+                    <ul class="text-left mb-6 space-y-2">
+                        <li>Basic AI Chat Assistance</li>
+                        <li>Standard Repair Guides</li>
+                        <li>Community Forum Access</li>
+                        <li>(Ad-Supported)</li>
+                    </ul>
+                    <a href="ai_interface.html" class="primary-button w-full text-center">Get Started Free</a>
+                </div>
+                 <div class="card p-6 primary-container border-2 border-[#6750a4]"> <h3 class="text-2xl font-semibold mb-4">Premium</h3>
+                    <p class="text-4xl font-bold mb-4">$2.50<span class="text-lg font-normal">/month</span></p>
+                     <ul class="text-left mb-6 space-y-2">
+                        <li>Everything in Free, plus:</li>
+                        <li>Unlimited Real-time AI Visual Assistance</li>
+                        <li>Advanced Troubleshooting</li>
+                        <li>Ad-Free Experience</li>
+                        <li>Priority access to new guides</li>
+                    </ul>
+                    <button class="primary-button w-full">Choose Premium</button>
+                </div>
+                 <div class="card p-6 secondary-container">
+                    <h3 class="text-2xl font-semibold mb-4">Pro</h3>
+                    <p class="text-4xl font-bold mb-4">$5.00<span class="text-lg font-normal">/month</span></p>
+                     <ul class="text-left mb-6 space-y-2">
+                        <li>Everything in Premium, plus:</li>
+                        <li>Access to Expert Chat Support</li>
+                        <li>Advanced AI Diagnostics</li>
+                         <li>Higher Resolution Camera Feed</li>
+                        <li>Early Access to Beta Features</li>
+                    </ul>
+                    <button class="primary-button w-full">Choose Pro</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contributor" class="py-16 px-4">
+        <div class="container mx-auto text-center max-w-2xl">
+            <span class="icon icon-heart mx-auto mb-4 w-12 h-12 text-red-600"></span> <h2 class="text-3xl font-bold mb-6">Become a FixiT AI Contributor</h2>
+            <p class="text-lg mb-8">Love the idea of empowering people to fix things and reduce waste? Become a Contributor to support our mission and help us keep the core service free for everyone. This tier is purely for support and does not offer additional repair features.</p>
+            <div class="card p-6 secondary-container inline-block text-left">
+                 <h3 class="text-xl font-semibold mb-4">Contributor Tier</h3>
+                 <p class="text-3xl font-bold mb-4">$10.00<span class="text-lg font-normal">/month</span></p>
+                 <p class="mb-4">Your support directly helps fund our AI development and content creation to keep FixiT AI accessible.</p>
+                 <p class="font-semibold mb-2">Contributor Niche Thing:</p>
+                 <ul class="list-disc list-inside mb-6">
+                     <li>Special "Founding Contributor" Badge on your profile (if profiles are implemented).</li>
+                     <li>Early access to experimental *non-repair* AI features (e.g., AI-powered tech news summaries, AI-generated DIY project ideas).</li>
+                     <li>Recognition on a dedicated Supporters page (optional opt-in).</li>
+                 </ul>
+                 <button class="outline-button w-full">Become a Contributor</button>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="primary-container py-8 px-4 text-center text-sm">
+        <p>&copy; 2025 FixiT AI. All rights reserved.</p>
+        <div class="mt-4">
+            <a href="#" class="nav-link text-sm mx-2">Privacy Policy</a>
+            <a href="#" class="nav-link text-sm mx-2">Terms of Service</a>
+            <a href="#" class="nav-link text-sm mx-2">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        // Placeholder for JavaScript functionality
+        // In a real app, you would add listeners for button clicks,
+        // handle camera feed integration, AI communication, etc.
+
+        // Example: Simple mobile menu toggle (requires adding menu structure in HTML)
+        const menuButton = document.querySelector('.menu-button');
+        // const navLinks = document.querySelector('.nav-links'); // Would need a mobile menu container
+
+        // if (menuButton) {
+        //     menuButton.addEventListener('click', () => {
+        //         // Toggle a class on navLinks to show/hide it
+        //         // navLinks.classList.toggle('show-mobile-menu');
+        //         alert('Mobile menu toggle not fully implemented in this demo.');
+        //     });
+        // }
+
+        console.log("FixiT AI Landing Page loaded. JavaScript placeholders are active.");
+
+    </script>
+
+</body>
+</html>

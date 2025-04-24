@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixiT AI - Your Repair Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Material 3 feel */
+        /* Using Inter font as requested in general instructions */
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f7f2f7; /* Surface color */
+            color: #1c1b1f; /* On Surface color */
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Stack elements vertically */
+            min-height: 100vh; /* Full viewport height */
+        }
+        .primary-container {
+            background-color: #eaddff; /* Primary Container */
+            color: #21005d; /* On Primary Container */
+        }
+        .secondary-container {
+             background-color: #e8def8; /* Secondary Container */
+             color: #4f378a; /* On Secondary Container */
+        }
+        .tertiary-container {
+            background-color: #ffd8e4; /* Tertiary Container */
+            color: #82555e; /* On Tertiary Container */
+        }
+         .error-container {
+            background-color: #f9dedc; /* Error Container */
+            color: #b3261e; /* On Error Container */
+        }
+        .primary-button {
+            background-color: #6750a4; /* Primary */
+            color: #ffffff; /* On Primary */
+            padding: 12px 24px;
+            border-radius: 24px; /* Fully rounded */
+            font-weight: 500; /* Medium weight */
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .primary-button:hover {
+            background-color: #4f378a; /* Primary container on hover */
+        }
+        .outline-button {
+             border: 1px solid #79747e; /* Outline */
+             color: #6750a4; /* Primary color for text */
+             padding: 10px 22px; /* Adjust padding for border */
+             border-radius: 20px; /* Rounded corners */
+             font-weight: 500;
+             transition: background-color 0.3s ease, color 0.3s ease;
+             background-color: transparent;
+             cursor: pointer;
+        }
+        .outline-button:hover {
+             background-color: #e8def8; /* Secondary container on hover */
+             color: #4f378a;
+        }
+         .card {
+            background-color: #ffffff; /* Surface */
+            color: #1c1b1f; /* On Surface */
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+        }
+         .top-app-bar {
+            background-color: #eaddff; /* Primary Container */
+            color: #21005d; /* On Primary Container */
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .top-app-bar .nav-link {
+            margin-left: 24px;
+            color: #21005d; /* On Primary Container */
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .top-app-bar .nav-link:hover {
+             color: #4f378a; /* On Secondary Container */
+        }
+        /* Responsive navigation - Hide on small screens, show on medium+ */
+        .nav-links {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+             .menu-button {
+                display: none;
+            }
+        }
+
+         /* Font for icons - using Lucide React equivalent for demo */
+         /* In a real app, you'd use an icon library like Lucide or Material Icons */
+         .icon {
+             display: inline-block;
+             width: 24px;
+             height: 24px;
+             vertical-align: middle;
+             /* Placeholder for SVG or icon font */
+             background-color: currentColor; /* Use text color for icon */
+             mask-size: cover;
+         }
+         /* Example icon placeholders */
+         .icon-chat { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'); }
+         .icon-send { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M9.3 9.3 16.7 16.7"/></svg>'); }
+         .icon-camera { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>'); }
+
+
+        /* AI Interface Layout */
+        .ai-interface-container {
+            flex-grow: 1; /* Allow container to take up available space */
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            max-width: 800px; /* Limit width for chat readability */
+            margin: 0 auto; /* Center the container */
+            width: 100%; /* Ensure it takes full width on small screens */
+        }
+
+        .chat-area {
+            flex-grow: 1; /* Chat messages area takes remaining space */
+            overflow-y: auto; /* Enable scrolling */
+            padding: 16px;
+            background-color: #ffffff; /* Surface */
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Space between messages */
+             min-height: 300px; /* Minimum height for chat area */
+        }
+
+        .message {
+            max-width: 80%; /* Limit message width */
+            padding: 8px 12px;
+            border-radius: 12px;
+            word-wrap: break-word; /* Prevent overflow */
+        }
+
+        .message.user {
+            align-self: flex-end; /* Align user messages to the right */
+            background-color: #eaddff; /* Primary Container */
+            color: #21005d; /* On Primary Container */
+        }
+
+        .message.ai {
+            align-self: flex-start; /* Align AI messages to the left */
+            background-color: #e8def8; /* Secondary Container */
+            color: #4f378a; /* On Secondary Container */
+        }
+
+        .input-controls {
+            display: flex;
+            padding-top: 16px;
+            gap: 8px;
+            align-items: center;
+        }
+
+         .input-controls input {
+            flex-grow: 1;
+            padding: 12px; /* Increased padding */
+            border: 1px solid #ccc;
+            border-radius: 24px; /* Fully rounded input */
+            outline: none;
+         }
+
+         .input-controls button {
+            background-color: #6750a4; /* Primary */
+            color: #ffffff; /* On Primary */
+            border: none;
+            border-radius: 50%; /* Circular button */
+            width: 48px; /* Slightly larger buttons */
+            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+         }
+         .input-controls button:hover {
+             background-color: #4f378a;
+         }
+         .input-controls .camera-button {
+             background-color: #ffd8e4; /* Tertiary Container */
+             color: #82555e; /* On Tertiary Container */
+         }
+         .input-controls .camera-button:hover {
+             background-color: #ffb2c6; /* Slightly darker tertiary */
+         }
+
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="top-app-bar">
+        <div class="text-xl font-bold">FixiT AI</div>
+        <nav class="nav-links">
+            <a href="index.html" class="nav-link">Home</a> <a href="index.html#how-it-works" class="nav-link">How it Works</a>
+            <a href="index.html#learn" class="nav-link">Learn</a>
+            <a href="index.html#rights" class="nav-link">Your Rights</a>
+            <a href="index.html#pricing" class="nav-link">Pricing</a>
+             <a href="index.html#contributor" class="nav-link">Contributor</a>
+        </nav>
+        <button class="menu-button md:hidden outline-button">
+            Menu </button>
+    </header>
+
+    <main class="ai-interface-container">
+        <h2 class="text-2xl font-bold text-center mb-6">Chat with FixiT AI</h2>
+
+        <div id="chatMessages" class="chat-area">
+            <div class="message ai">Hello! I'm FixiT AI. Tell me what you need help repairing, or click the camera button for visual guidance!</div>
+        </div>
+
+        <div class="input-controls">
+            <button id="cameraLiveButton" class="camera-button">
+                <span class="icon icon-camera w-6 h-6 !bg-[#82555e]"></span> </button>
+            <input type="text" id="chatInput" placeholder="Type your message...">
+            <button id="sendChatButton">
+                 <span class="icon icon-send w-6 h-6 !bg-white"></span> </button>
+        </div>
+    </main>
+
+
+    <footer class="primary-container py-8 px-4 text-center text-sm mt-auto"> <p>&copy; 2025 FixiT AI. All rights reserved.</p>
+        <div class="mt-4">
+            <a href="index.html#privacy" class="nav-link text-sm mx-2">Privacy Policy</a> <a href="index.html#terms" class="nav-link text-sm mx-2">Terms of Service</a> <a href="index.html#contact" class="nav-link text-sm mx-2">Contact Us</a> </div>
+    </footer>
+
+    <script>
+        const cameraLiveButton = document.getElementById('cameraLiveButton');
+        const chatInput = document.getElementById('chatInput');
+        const sendChatButton = document.getElementById('sendChatButton');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Function to send a message (placeholder)
+        function sendMessage() {
+            const messageText = chatInput.value.trim();
+            if (messageText !== '') {
+                // Add user message to chat
+                addMessage(messageText, 'user');
+
+                // Clear input
+                chatInput.value = '';
+
+                // Scroll to the latest message
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // --- Placeholder for sending message to AI ---
+                console.log("User sent message:", messageText);
+                // In a real application, you would send messageText to your backend AI API
+                // and then call addMessage() with the AI's response.
+                // For demo purposes, let's simulate an AI response after a short delay
+                setTimeout(() => {
+                    const aiResponse = "This is a simulated AI response to: '" + messageText + "'. What else can I help with?";
+                    addMessage(aiResponse, 'ai');
+                    chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll again after AI response
+                }, 1000); // Simulate 1 second delay
+                // -------------------------------------------
+            }
+        }
+
+         // Function to simulate starting Camera Live (placeholder)
+         function startCameraLive() {
+             alert("Camera Live Feature (Placeholder): This would initiate real-time visual analysis and guidance.");
+             // In a real app, this would trigger camera access and start the AI vision pipeline
+         }
+
+
+        // Function to add a message to the chat display
+        function addMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.textContent = text;
+            chatMessages.appendChild(messageElement);
+        }
+
+        // Event Listeners
+        sendChatButton.addEventListener('click', sendMessage);
+        cameraLiveButton.addEventListener('click', startCameraLive); // Add listener for camera button
+
+        // Allow sending message by pressing Enter in the input field
+        chatInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default form submission if input was in a form
+                sendMessage();
+            }
+        });
+
+        // Placeholder for mobile menu toggle (from previous version)
+        const menuButton = document.querySelector('.menu-button');
+        // const navLinks = document.querySelector('.nav-links'); // Would need a mobile menu container
+
+        // if (menuButton) {
+        //     menuButton.addEventListener('click', () => {
+        //         // Toggle a class on navLinks to show/hide it
+        //         // navLinks.classList.toggle('show-mobile-menu');
+        //         alert('Mobile menu toggle not fully implemented in this demo.');
+        //     });
+        // }
+
+         // Ensure chat area scrolls to the bottom on load (if initial messages are tall)
+         chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+    </script>
+
+</body>
+</html>
