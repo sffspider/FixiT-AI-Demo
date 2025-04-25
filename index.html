@@ -38,6 +38,8 @@
             transition: background-color 0.3s ease;
             border: none;
             cursor: pointer;
+            display: inline-block; /* Ensure padding works */
+            text-align: center; /* Center text if used as link */
         }
         .primary-button:hover {
             background-color: #4f378a; /* Primary container on hover */
@@ -51,6 +53,8 @@
              transition: background-color 0.3s ease, color 0.3s ease;
              background-color: transparent;
              cursor: pointer;
+             display: inline-block; /* Ensure padding works */
+             text-align: center; /* Center text if used as link */
         }
         .outline-button:hover {
              background-color: #e8def8; /* Secondary container on hover */
@@ -70,6 +74,8 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative; /* Needed for absolute positioning of mobile menu */
+            z-index: 20; /* Ensure header is above mobile menu */
         }
         .top-app-bar .nav-link {
             margin-left: 24px;
@@ -81,16 +87,54 @@
         .top-app-bar .nav-link:hover {
              color: #4f378a; /* On Secondary Container */
         }
-        /* Responsive navigation - Hide on small screens, show on medium+ */
-        .nav-links {
-            display: none;
+        /* Desktop navigation links */
+        .nav-links-desktop {
+            display: none; /* Hidden by default */
         }
+        /* Mobile menu button */
+         .menu-button {
+             /* Use outline-button styles */
+         }
+
+        /* Mobile navigation links (Hidden by default, positioned absolutely) */
+        .nav-links-mobile {
+            position: absolute;
+            top: 100%; /* Position below the header */
+            left: 0;
+            width: 100%;
+            background-color: #eaddff; /* Match header background */
+            flex-direction: column;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10; /* Below header */
+            display: none; /* Hidden by default */
+        }
+         .nav-links-mobile .nav-link {
+             margin: 8px 0; /* Add vertical spacing */
+             color: #21005d; /* On Primary Container */
+             text-decoration: none;
+             font-weight: 500;
+        }
+         .nav-links-mobile .primary-button {
+             width: 100%; /* Full width button */
+             margin-top: 8px;
+        }
+
+        /* Class to show the mobile menu */
+        .nav-links-mobile.show-menu {
+            display: flex;
+        }
+
+        /* Responsive: Show desktop links on medium+, hide mobile menu button */
         @media (min-width: 768px) {
-            .nav-links {
-                display: flex;
+            .nav-links-desktop {
+                display: flex; /* Show desktop links */
             }
              .menu-button {
-                display: none;
+                display: none; /* Hide mobile menu button */
+            }
+            .nav-links-mobile {
+                display: none !important; /* Ensure mobile menu is hidden on desktop */
             }
         }
 
@@ -104,14 +148,18 @@
              /* Placeholder for SVG or icon font */
              background-color: currentColor; /* Use text color for icon */
              mask-size: cover;
+             mask-repeat: no-repeat;
+             mask-position: center;
          }
-         /* Example icon placeholders */
+         /* Example icon placeholders (re-using from previous code) */
          .icon-wrench { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 0 7.94-7.94l-3.77 3.77Z"/></svg>'); }
          .icon-book { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>'); }
          .icon-scale { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-9 3 9c-.8-.4-2-.8-3-1-1.2-.1-2-.5-3-1ZM2 16l3-9 3 9c-.8-.4-2-.8-3-1-1.2-.1-2-.5-3-1ZM7 21l5-10 5 10"/><path d="M12 12v9"/></svg>'); }
          .icon-camera { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>'); }
          .icon-dollar { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>'); }
          .icon-heart { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>'); }
+         /* Icon for the menu button */
+         .icon-menu { mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>'); }
 
 
     </style>
@@ -121,25 +169,36 @@
 
     <header class="top-app-bar">
         <div class="text-xl font-bold">FixiT AI</div>
-        <nav class="nav-links">
+
+        <nav class="nav-links-desktop">
             <a href="#how-it-works" class="nav-link">How it Works</a>
             <a href="#learn" class="nav-link">Learn</a>
             <a href="#rights" class="nav-link">Your Rights</a>
             <a href="#pricing" class="nav-link">Pricing</a>
-             <a href="#contributor" class="nav-link">Contributor</a>
+            <a href="#contributor" class="nav-link">Contributor</a>
             <a href="ai_interface.html" class="primary-button ml-4">Get Started Free</a>
         </nav>
-        <button class="menu-button md:hidden outline-button">
-            Menu </button>
+
+        <button class="menu-button md:hidden outline-button" aria-label="Toggle mobile menu">
+             <span class="icon icon-menu"></span> </button>
+
+        <nav class="nav-links-mobile" id="mobile-menu">
+             <a href="#how-it-works" class="nav-link">How it Works</a>
+             <a href="#learn" class="nav-link">Learn</a>
+             <a href="#rights" class="nav-link">Your Rights</a>
+             <a href="#pricing" class="nav-link">Pricing</a>
+             <a href="#contributor" class="nav-link">Contributor</a>
+             <a href="ai_interface.html" class="primary-button">Get Started Free</a>
+        </nav>
+
     </header>
 
     <section class="primary-container text-center py-20 px-4">
         <h1 class="text-4xl md:text-5xl font-bold mb-6">Fix Anything with FixiT AI</h1>
         <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Your intelligent companion for hassle-free repairs, learning technology, and understanding your consumer rights.</p>
-        <div class="flex justify-center space-x-4">
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <a href="ai_interface.html" class="primary-button">Start Fixing Now</a>
-            <button class="outline-button">Learn More</button>
-        </div>
+            <a href="#how-it-works" class="outline-button">Learn More</a> </div>
     </section>
 
     <section id="how-it-works" class="py-16 px-4">
@@ -171,8 +230,7 @@
                 <span class="icon icon-book mb-4 w-12 h-12"></span>
                 <h2 class="text-3xl font-bold mb-6">Learn More Than Just Fixing</h2>
                 <p class="text-lg mb-6">FixiT AI isn't just about repairs. We help you understand *how* things work. Explore interactive diagrams, component explanations, and the principles behind common technologies.</p>
-                <button class="outline-button">Explore Learning Resources</button>
-            </div>
+                <a href="#" class="outline-button">Explore Learning Resources</a> </div>
             <div class="md:w-1/2">
                 <img src="https://placehold.co/600x400/eaddff/21005d?text=Tech+Diagram+Placeholder" alt="Technology Learning Illustration" class="rounded-lg shadow-lg w-full h-auto">
             </div>
@@ -185,8 +243,7 @@
                 <span class="icon icon-scale mb-4 w-12 h-12"></span>
                 <h2 class="text-3xl font-bold mb-6">Know Your Consumer Rights</h2>
                 <p class="text-lg mb-6">Understanding your rights as a consumer is crucial. FixiT AI provides easy-to-understand information on warranties, returns, product lifespan, and the 'right to repair' movement relevant to your location.</p>
-                <button class="outline-button">Understand Your Rights</button>
-            </div>
+                <a href="#" class="outline-button">Understand Your Rights</a> </div>
             <div class="md:w-1/2">
                 <img src="https://placehold.co/600x400/f9dedc/b3261e?text=Rights+Illustration+Placeholder" alt="Consumer Rights Illustration" class="rounded-lg shadow-lg w-full h-auto">
             </div>
@@ -196,62 +253,69 @@
     <section id="pricing" class="tertiary-container py-16 px-4">
         <div class="container mx-auto text-center">
             <h2 class="text-3xl font-bold mb-12">Unlock More with Premium Plans</h2>
-            <p class="text-lg mb-8 max-w-2xl mx-auto">Start fixing for free, and upgrade for enhanced features and support.</p>
+            <p class="text-lg mb-8 max-w-2xl mx-auto">Start fixing for free, and upgrade for enhanced features and support. Our subscriptions are designed to be cheaper than any other AI service, making advanced repair accessible for everyone.</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="card p-6 secondary-container">
+                     <span class="icon icon-wrench mx-auto mb-4"></span>
                     <h3 class="text-2xl font-semibold mb-4">Free</h3>
                     <p class="text-4xl font-bold mb-4">$0<span class="text-lg font-normal">/month</span></p>
-                    <ul class="text-left mb-6 space-y-2">
+                    <ul class="text-left mb-6 space-y-2 text-sm">
                         <li>Basic AI Chat Assistance</li>
                         <li>Standard Repair Guides</li>
                         <li>Community Forum Access</li>
+                        <li>Technical Learning Basics</li>
+                        <li>Consumer Rights Info</li>
                         <li>(Ad-Supported)</li>
                     </ul>
-                    <a href="ai_interface.html" class="primary-button w-full text-center">Get Started Free</a>
+                    <a href="ai_interface.html" class="primary-button w-full">Get Started Free</a>
                 </div>
-                 <div class="card p-6 primary-container border-2 border-[#6750a4]"> <h3 class="text-2xl font-semibold mb-4">Premium</h3>
+                 <div class="card p-6 primary-container border-2 border-[#6750a4]">
+                     <span class="icon icon-dollar mx-auto mb-4"></span>
+                     <h3 class="text-2xl font-semibold mb-4">Premium</h3>
                     <p class="text-4xl font-bold mb-4">$2.50<span class="text-lg font-normal">/month</span></p>
-                     <ul class="text-left mb-6 space-y-2">
+                     <ul class="text-left mb-6 space-y-2 text-sm">
                         <li>Everything in Free, plus:</li>
                         <li>Unlimited Real-time AI Visual Assistance</li>
                         <li>Advanced Troubleshooting</li>
                         <li>Ad-Free Experience</li>
                         <li>Priority access to new guides</li>
+                         <li>Higher Resolution Camera Feed</li>
                     </ul>
-                    <button class="primary-button w-full">Choose Premium</button>
-                </div>
+                    <a href="#" class="primary-button w-full">Choose Premium</a> </div>
                  <div class="card p-6 secondary-container">
+                     <span class="icon icon-dollar mx-auto mb-4"></span>
                     <h3 class="text-2xl font-semibold mb-4">Pro</h3>
                     <p class="text-4xl font-bold mb-4">$5.00<span class="text-lg font-normal">/month</span></p>
-                     <ul class="text-left mb-6 space-y-2">
+                     <ul class="text-left mb-6 space-y-2 text-sm">
                         <li>Everything in Premium, plus:</li>
                         <li>Access to Expert Chat Support</li>
                         <li>Advanced AI Diagnostics</li>
-                         <li>Higher Resolution Camera Feed</li>
                         <li>Early Access to Beta Features</li>
+                         <li>Exclusive Learning Modules</li>
                     </ul>
-                    <button class="primary-button w-full">Choose Pro</button>
-                </div>
+                    <a href="#" class="primary-button w-full">Choose Pro</a> </div>
             </div>
+             <p class="text-lg mt-12 max-w-2xl mx-auto">Looking for solutions for your business? Learn about our <a href="#" class="text-[#6750a4] hover:underline font-semibold">Enterprise Plan</a> for asset management and maintenance data ("Bookdata").</p>
         </div>
     </section>
 
     <section id="contributor" class="py-16 px-4">
         <div class="container mx-auto text-center max-w-2xl">
-            <span class="icon icon-heart mx-auto mb-4 w-12 h-12 text-red-600"></span> <h2 class="text-3xl font-bold mb-6">Become a FixiT AI Contributor</h2>
-            <p class="text-lg mb-8">Love the idea of empowering people to fix things and reduce waste? Become a Contributor to support our mission and help us keep the core service free for everyone. This tier is purely for support and does not offer additional repair features.</p>
-            <div class="card p-6 secondary-container inline-block text-left">
+            <span class="icon icon-heart mx-auto mb-4 w-12 h-12 text-red-600"></span>
+            <h2 class="text-3xl font-bold mb-6">Become a FixiT AI Contributor</h2>
+            <p class="text-lg mb-8">FixiT AI thrives on the power of its community. By becoming a Contributor, you directly support our mission to keep the core service free and accessible for everyone, especially the working common people. This tier is purely for supporting the platform and does not add repair features.</p>
+            <div class="card p-6 secondary-container inline-block text-left w-full">
                  <h3 class="text-xl font-semibold mb-4">Contributor Tier</h3>
                  <p class="text-3xl font-bold mb-4">$10.00<span class="text-lg font-normal">/month</span></p>
-                 <p class="mb-4">Your support directly helps fund our AI development and content creation to keep FixiT AI accessible.</p>
-                 <p class="font-semibold mb-2">Contributor Niche Thing:</p>
-                 <ul class="list-disc list-inside mb-6">
+                 <p class="mb-4">Your support directly helps fund our AI development, content creation, and infrastructure costs.</p>
+                 <p class="font-semibold mb-2">Contributor Perks:</p>
+                 <ul class="list-disc list-inside mb-6 text-sm">
                      <li>Special "Founding Contributor" Badge on your profile (if profiles are implemented).</li>
                      <li>Early access to experimental *non-repair* AI features (e.g., AI-powered tech news summaries, AI-generated DIY project ideas).</li>
                      <li>Recognition on a dedicated Supporters page (optional opt-in).</li>
+                     <li>Participation in exclusive Contributor community discussions.</li>
                  </ul>
-                 <button class="outline-button w-full">Become a Contributor</button>
-            </div>
+                 <a href="#" class="outline-button w-full">Become a Contributor</a> </div>
         </div>
     </section>
 
@@ -266,25 +330,16 @@
     </footer>
 
     <script>
-        // Placeholder for JavaScript functionality
-        // In a real app, you would add listeners for button clicks,
-        // handle camera feed integration, AI communication, etc.
-
-        // Example: Simple mobile menu toggle (requires adding menu structure in HTML)
         const menuButton = document.querySelector('.menu-button');
-        // const navLinks = document.querySelector('.nav-links'); // Would need a mobile menu container
+        const mobileMenu = document.getElementById('mobile-menu');
 
-        // if (menuButton) {
-        //     menuButton.addEventListener('click', () => {
-        //         // Toggle a class on navLinks to show/hide it
-        //         // navLinks.classList.toggle('show-mobile-menu');
-        //         alert('Mobile menu toggle not fully implemented in this demo.');
-        //     });
-        // }
+        // Check if elements exist before adding event listeners
+        if (menuButton && mobileMenu) {
+            menuButton.addEventListener('click', () => {
+                // Toggle the 'show-menu' class to display/hide the mobile menu
+                mobileMenu.classList.toggle('show-menu');
+            });
+        }
 
-        console.log("FixiT AI Landing Page loaded. JavaScript placeholders are active.");
-
-    </script>
-
-</body>
-</html>
+        // Optional: Close mobile menu when a link is clicked (improves UX)
+        const mobileLinks = mobileMenu ? mobileMe
