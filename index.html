@@ -330,16 +330,14 @@
     </footer>
 
     <script>
-        const menuButton = document.querySelector('.menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+        document.addEventListener('DOMContentLoaded', (event) => {
+            console.log("DOM fully loaded and parsed"); // Log when DOM is ready
 
-        // Check if elements exist before adding event listeners
-        if (menuButton && mobileMenu) {
-            menuButton.addEventListener('click', () => {
-                // Toggle the 'show-menu' class to display/hide the mobile menu
-                mobileMenu.classList.toggle('show-menu');
-            });
-        }
+            const menuButton = document.querySelector('.menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
 
-        // Optional: Close mobile menu when a link is clicked (improves UX)
-        const mobileLinks = mobileMenu ? mobileMe
+            // Check if elements exist before adding event listeners
+            if (menuButton && mobileMenu) {
+                console.log("Menu button and mobile menu found."); // Confirm elements are found
+                menuButton.addEventListener('click', () => {
+                    cons
